@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Etkilesim",
+                    "type": "Button",
+                    "id": "02c95c0e-cfec-4648-a469-d36d66485446",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -156,11 +165,22 @@
                 {
                     "name": "",
                     "id": "c8275d53-bc10-47b1-84f4-2d3c491c429d",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "KokuDefEtme",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "efa1d69f-a173-4a37-9ffe-4e698c47bbfa",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Etkilesim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

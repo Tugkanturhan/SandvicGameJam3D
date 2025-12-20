@@ -30,14 +30,23 @@ public class EnKiymetli : MonoBehaviour
         // --- ANIMASYONLARI TETIKLE ---
         if (anim != null)
         {
-            // Yürüme (Speed parametresi)
-            anim.SetFloat("Speed", v + Mathf.Abs(h));
+            float speed = Mathf.Clamp01(v + Mathf.Abs(h));
+            anim.SetFloat("Speed", speed);
 
-            // Gard Alma (Sağ tık basılıyken)
-            anim.SetBool("isGuarding", Input.GetMouseButton(1));
+            // 🛡️ Guard (SADECE basılıyken)
+            bool isGuarding = Input.GetMouseButton(1);
+            anim.SetBool("isGuarding", isGuarding);
 
-            // Savuşturma (E tuşuna basınca)
-            if (Input.GetKeyDown(KeyCode.E)) anim.SetTrigger("deflect");
+            // ⚡ Deflect (ANLIK)
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                // Guard açıkken deflect olmaz → kapat
+                anim.SetBool("isGuarding", false);
+
+                // Trigger'ı temiz tetikle
+                anim.ResetTrigger("deflect");
+                anim.SetTrigger("deflect");
+            }
         }
 
         HandlePlanetMovement(h, v);
