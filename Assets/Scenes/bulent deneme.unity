@@ -2431,7 +2431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 385580635eced674aa2756710dfac4fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planet: {fileID: 1076055855}
+  planet: {fileID: 0}
   moveSpeed: 60
   turnSpeed: 10
   lerpTime: 10
