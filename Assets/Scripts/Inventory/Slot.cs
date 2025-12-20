@@ -36,7 +36,10 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
    }
    public void UpdateSlot()
    {
-    
+        if(IconImage == null) {
+        IconImage = transform.GetChild(0).GetComponent<Image>();
+        amountText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+      }
     
       if (heldItem != null){
         IconImage.enabled = true;
@@ -49,10 +52,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
          amountText.text = "";
       }
 
-      if(IconImage == null) {
-        IconImage = transform.GetChild(0).GetComponent<Image>();
-        amountText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-      }
+      
    }
 
    public int AddAmount(int amountToAdd)

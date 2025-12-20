@@ -19,6 +19,13 @@ public class Inventory : MonoBehaviour
     private Material originalMaterial;
     private Renderer lookAtRenderer = null;
 
+    private int equippedHotbarIndex = 0; //0-5
+    public float equippedOpacity = 0.9f;
+    public float normalOpacity = 0.58f;
+
+    public Transform Hand;
+    private GameObject currentHandItem;
+
 
     private List<Slot> hotbarSlots = new List<Slot>();
     private List<Slot> inventorySlots = new List<Slot>();
@@ -36,19 +43,30 @@ public class Inventory : MonoBehaviour
     }
     void Update()
     {
+
         //if (Input.GetKeyDown(KeyCode.Q)) {
-        //    AddItem(testItem, 2);
+        //   AddItem(testItem, 2);
         //}
         //else if (Input.GetKeyDown(KeyCode.E)) {
         //    AddItem(testItem2, 3);
         //}
 
+        
+
         if (Input.GetKeyDown(KeyCode.Tab)){
 
             Container.SetActive(!Container.activeInHierarchy);
-            Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
+            //Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
             Cursor.visible = !Cursor.visible;
             PlayerCam.Instance.updatingRotation=!PlayerCam.Instance.updatingRotation;
+           if (Cursor.visible)
+            {
+               Cursor.lockState = CursorLockMode.None; // İmleci serbest bırak
+            }
+            else
+            {
+               Cursor.lockState = CursorLockMode.Locked; // İmleci merkeze kilitle (FPS oyunları için)
+            }
         }
 
         DetectLookAtItem();
@@ -57,6 +75,11 @@ public class Inventory : MonoBehaviour
         StartDrag();
         UpdateDragItemPosition();
         EndDrag();
+
+        UpdateHotbarOpacity();
+        HandleHotBarSelection();
+        HandleDropEquippedItem();
+
     }
     public void AddItem(ItemSO itemToAdd, int amount) 
     {
@@ -195,8 +218,9 @@ public class Inventory : MonoBehaviour
             Item item = lookAtRenderer.GetComponent<Item>();
             if(item !=null)
             {
-                AddItem(item.item, item.amount);
-                Destroy(item.gameObject);
+                AddItem(item.item, item.amount);    
+                Destroy(item.gameObject);   
+                EquipHandItem();
             }
         }
     }
@@ -220,5 +244,69 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void UpdateHotbarOpacity()
+    {
+        for(int i = 0; i < hotbarSlots.Count; i++)
+        {
+            Image icon = hotbarSlots[i].GetComponent<Image>();
+            if(icon != null)
+            {
+                icon.color = (i == equippedHotbarIndex) ? new Color(1, 1, 1, equippedOpacity) : new Color(1, 1, 1, normalOpacity);
+            }
+        }
+    }
+
+    private void HandleHotBarSelection()
+    {
+        for(int i = 0; i < 6; i++)
+        {
+            if(Input.GetKeyDown((i + 1).ToString()))
+            {
+                equippedHotbarIndex = i;
+                UpdateHotbarOpacity();
+                EquipHandItem();
+            }
+        }
+    }
+
+    private void HandleDropEquippedItem()
+    {
+        if (!Input.GetKeyDown(KeyCode.Q)) return;
+
+        Slot equippedSlot = hotbarSlots[equippedHotbarIndex];
+
+        if (!equippedSlot.HasItem()) return;
+
+        ItemSO itemSO = equippedSlot.GetItem();
+        GameObject prefab = itemSO.itemPrefab;
+
+        if (prefab == null) return;
+
+        // Eşyayı kameranın biraz önünde oluşturur
+        GameObject dropped = Instantiate(prefab, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+
+        Item item = dropped.GetComponent<Item>();
+        item.item = itemSO;
+        item.amount = equippedSlot.GetItemAmount();
+
+        equippedSlot.ClearSlot();
+        EquipHandItem();
+    }
+
+    private void EquipHandItem()
+    {
+        if (currentHandItem != null) Destroy(currentHandItem);
+
+        Slot equippedSlot = hotbarSlots[equippedHotbarIndex];
+        if (!equippedSlot.HasItem()) return;
+
+        ItemSO item = equippedSlot.GetItem();
+        if (item.handItemPrefab == null) return;
+
+        currentHandItem = Instantiate(item.handItemPrefab, Hand);
+        currentHandItem.transform.localPosition = Vector3.zero;
+        currentHandItem.transform.localRotation = Quaternion.identity;
     }
 }
