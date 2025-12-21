@@ -8,14 +8,14 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TugiGezegenKarakter2.unity
     guid: 211f22dcaa957b44eac1e5c46cd8265c
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/UI.unity
     guid: a7d70c3f4fd4e6a4f9f8899d3c26c524
-  - enabled: 0
-    path: Assets/Scenes/bulent deneme.unity
+  - enabled: 1
+    path: Assets/Scenes/bulent.unity
     guid: 195fc15a35527004ba7df8b35f62bd93
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
