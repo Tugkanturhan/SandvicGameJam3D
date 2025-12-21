@@ -1134,7 +1134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2581e8bd5a3cda246b0a185a0f17f14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: bulent
+  sceneName: Start
   loadMode: 0
   showLoadingScreen: 0
   delayBeforeLoad: 0
